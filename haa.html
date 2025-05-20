@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>I Love You with Flying Hearts</title>
+<style>
+  /* Background and center content */
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #fce2e4, #f797a3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Message styling */
+  .message {
+    position: relative;
+    z-index: 10;
+    font-size: 4rem;
+    color: #e91e63;
+    font-weight: 900;
+    text-shadow:
+      2px 2px 8px rgba(255, 105, 180, 0.6),
+      0 0 15px #ff4081,
+      0 0 30px #f48fb1;
+    user-select: none;
+  }
+
+  /* Container for hearts */
+  #hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Hearts don't block clicks */
+    overflow: visible;
+    z-index: 5;
+  }
+
+  /* Heart base style */
+  .heart {
+    position: absolute;
+    bottom: 0;
+    width: 24px;
+    height: 24px;
+    background-color: #ff4081;
+    transform-origin: center;
+    clip-path: polygon(
+      50% 0%,
+      61% 10%,
+      70% 25%,
+      70% 40%,
+      70% 55%,
+      50% 80%,
+      30% 55%,
+      30% 40%,
+      30% 25%,
+      39% 10%
+    );
+    animation-name: flyUp;
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 2px #d81b60);
+  }
+
+  /* Heart shape refined with before and after to make full heart shape */
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-color: #ff4081;
+    border-radius: 50%;
+    top: 0;
+  }
+  .heart::before {
+    left: 12px;
+  }
+  .heart::after {
+    left: 0;
+  }
+
+  /* Fly up animation of the hearts */
+  @keyframes flyUp {
+    0% {
+      transform: translateY(0) scale(1) rotate(0deg);
+      opacity: 0.9;
+    }
+    30% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-120vh) scale(0.5) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Responsive font size */
+  @media (max-width: 600px) {
+    .message {
+      font-size: 3rem;
+      padding: 0 1rem;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="message">I Love You ❤️ </div>
+    <div class="message">SARTH  </div>
+
+  <div id="hearts-container"></div>
+
+<script>
+  const container = document.getElementById('hearts-container');
+
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+
+    // Random horizontal position on viewport width
+    heart.style.left = Math.random() * 100 + 'vw';
+
+    // Random animation duration between 3 and 6 seconds
+    heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+
+    // Random scale for size variety
+    const size = 12 + Math.random() * 24; // between 12px and 36px
+    heart.style.width = size + 'px';
+    heart.style.height = size + 'px';
+
+    // Adjust before and after size accordingly
+    heart.style.setProperty('--heart-size', size + 'px');
+    heart.style.setProperty('width', size + 'px');
+    heart.style.setProperty('height', size + 'px');
+
+    // Append to container
+    container.appendChild(heart);
+
+    // Remove heart after animation ends
+    heart.addEventListener('animationend', () => {
+      heart.remove();
+    });
+  }
+
+  // Create multiple hearts at random intervals
+  setInterval(() => {
+    // Create between 1 to 3 hearts per interval for dense effect
+    const count = 1 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < count; i++) {
+      createHeart();
+    }
+  }, 400);
+</script>
+</body>
+</html>
